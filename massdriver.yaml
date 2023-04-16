@@ -1,0 +1,162 @@
+schema: draft-07
+name: "k8s-datadog"
+description: "This chart installs the Datadog Agent into your Kubernetes cluster to collect and send observability information to Datadog"
+source_url: github.com/massdriver-cloud/k8s-datadog
+access: private
+type: "infrastructure"
+
+params:
+  required:
+    - namespace
+    - datadog
+    - clusterAgent
+    - networkMonitoring
+    - systemProbe
+    - securityAgent
+  properties:
+    namespace:
+      title: Namespace
+      type: string
+      default: "datadog"
+    datadog:
+      required:
+        - site
+        - apiKey
+        - apm
+        - dogstatsd
+        - logs
+        - env
+      properties:
+        site:
+          type: string
+          title: Datadog URL
+          description: The site of the Datadog intake to send Agent data to. Normally the default \"datadoghq.com\" is fine, but during Datadog setup you may need to use a specific endpoint.
+          default: datadoghq.com
+          enum:
+          - datadoghq.com
+          - datadoghq.eu
+          - us3.datadoghq.com
+          - us5.datadoghq.com
+          - ddog-gov.com
+        apiKey:
+          type: string
+          title: Datadog API Key
+          format: password
+        apm:
+          properties:
+            portEnabled:
+              type: boolean
+              title: Enable APM
+              description: Enable Application Performance Monitoring
+              default: true
+          type: object
+          title: APM Settings
+        dogstatsd:
+          properties:
+            useHostPort:
+              type: boolean
+              title: Use Host Port
+              description: Bind to and expose the Host port. This is required for custom metrics.
+              default: true
+          type: object
+          title: dogstatsd Settings
+        logs:
+          properties:
+            enabled:
+              type: boolean
+              title: Enable Log Collection
+              default: true
+          type: object
+          title: Logging Settings
+        env:
+          items:
+            properties:
+              name:
+                type: string
+                title: Name
+              value:
+                type: string
+                title: Value
+            type: object
+          default: []
+          type: array
+          title: Environment Variables
+          description: Review [Datadog's documentation](https://docs.datadoghq.com/agent/docker/?tab=standard#environment-variables) on supported environment variables)
+      type: object
+      title: Datadog Settings
+    clusterAgent:
+      properties:
+        metricsProvider:
+          properties:
+            enabled:
+              type: boolean
+              title: enabled
+              default: true
+          type: object
+          title: Metrics Provider Settings
+      type: object
+      title: Cluster Agent Settings
+    networkMonitoring:
+      properties:
+        enabled:
+          type: boolean
+          title: Network Performance Monitoring
+          description: Enable [network performance monitoring](https://docs.datadoghq.com/network_monitoring/performance/)
+          default: true
+      type: object
+      title: Network Monitoring Settings
+    systemProbe:
+      properties:
+        enableTCPQueueLength:
+          type: boolean
+          title: TCP Queue Length
+          description: Enable the [TCP queue length eBPF-based](https://docs.datadoghq.com/integrations/tcp_queue_length/) check
+          default: true
+        enableOOMKill:
+          type: boolean
+          title: OOM Kill
+          description: Enable the [OOM kill eBPF-based](https://docs.datadoghq.com/integrations/oom_kill/) check
+          default: true
+      type: object
+      title: System Probe Settings
+    securityAgent:
+      properties:
+        runtime:
+          properties:
+            enabled:
+              type: boolean
+              title: Cloud Workload Security
+              description: Set to true to enable [Cloud Workload Security (CWS)](https://www.datadoghq.com/product/cloud-security-management/cloud-workload-security/)
+              default: true
+          type: object
+          title: Runtime Settings
+      type: object
+      title: Security Agent Settings
+
+connections:
+  required:
+    - kubernetes_cluster
+  properties:
+    kubernetes_cluster:
+      $ref: massdriver/kubernetes-cluster
+
+artifacts:
+  properties: {}
+
+ui:
+  ui:order:
+  - namespace
+  - datadog
+  - clusterAgent
+  - networkMonitoring
+  - systemProbe
+  - securityAgent
+  - "*"
+  datadog:
+    ui:order:
+    - site
+    - apiKey
+    - apm
+    - dogstatsd
+    - logs
+    - env
