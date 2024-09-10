@@ -17,7 +17,7 @@ This chart installs the Datadog Agent into your Kubernetes cluster to collect an
 
 ## Design
 
-For detailed information, check out our [Operator Guide](operator.mdx) for this bundle.
+For detailed information, check out our [Operator Guide](operator.md) for this bundle.
 
 ## Usage
 
@@ -37,33 +37,9 @@ Form input parameters for configuring a bundle for deployment.
 <summary>View</summary>
 
 <!-- PARAMS:START -->
-## Properties
 
-- **`clusterAgent`** *(object)*
-  - **`metricsProvider`** *(object)*
-    - **`enabled`** *(boolean)*: Default: `True`.
-- **`datadog`** *(object)*
-  - **`apiKey`** *(string)*
-  - **`apm`** *(object)*
-    - **`portEnabled`** *(boolean)*: Enable Application Performance Monitoring. Default: `True`.
-  - **`dogstatsd`** *(object)*
-    - **`useHostPort`** *(boolean)*: Bind to and expose the Host port. This is required for custom metrics. Default: `True`.
-  - **`env`** *(array)*: Review [Datadog's documentation](https://docs.datadoghq.com/agent/docker/?tab=standard#environment-variables) on supported environment variables). Default: `[]`.
-    - **Items** *(object)*
-      - **`name`** *(string)*
-      - **`value`** *(string)*
-  - **`logs`** *(object)*
-    - **`enabled`** *(boolean)*: Default: `True`.
-  - **`site`** *(string)*: The site of the Datadog intake to send Agent data to. Normally the default \"datadoghq.com\" is fine, but during Datadog setup you may need to use a specific endpoint. Must be one of: `['datadoghq.com', 'datadoghq.eu', 'us3.datadoghq.com', 'us5.datadoghq.com', 'ddog-gov.com']`. Default: `datadoghq.com`.
-- **`namespace`** *(string)*: Default: `datadog`.
-- **`networkMonitoring`** *(object)*
-  - **`enabled`** *(boolean)*: Enable [network performance monitoring](https://docs.datadoghq.com/network_monitoring/performance/). Default: `True`.
-- **`securityAgent`** *(object)*
-  - **`runtime`** *(object)*
-    - **`enabled`** *(boolean)*: Set to true to enable [Cloud Workload Security (CWS)](https://www.datadoghq.com/product/cloud-security-management/cloud-workload-security/). Default: `True`.
-- **`systemProbe`** *(object)*
-  - **`enableOOMKill`** *(boolean)*: Enable the [OOM kill eBPF-based](https://docs.datadoghq.com/integrations/oom_kill/) check. Default: `True`.
-  - **`enableTCPQueueLength`** *(boolean)*: Enable the [TCP queue length eBPF-based](https://docs.datadoghq.com/integrations/tcp_queue_length/) check. Default: `True`.
+**Params coming soon**
+
 <!-- PARAMS:END -->
 
 </details>
@@ -76,127 +52,9 @@ Connections from other bundles that this bundle depends on.
 <summary>View</summary>
 
 <!-- CONNECTIONS:START -->
-## Properties
 
-- **`kubernetes_cluster`** *(object)*: Kubernetes cluster authentication and cloud-specific configuration. Cannot contain additional properties.
-  - **`data`** *(object)*
-    - **`authentication`** *(object)*
-      - **`cluster`** *(object)*
-        - **`certificate-authority-data`** *(string)*
-        - **`server`** *(string)*
-      - **`user`** *(object)*
-        - **`token`** *(string)*
-    - **`infrastructure`** *(object)*: Cloud specific Kubernetes configuration data.
-      - **One of**
-        - AWS EKS infrastructure config*object*: . Cannot contain additional properties.
-          - **`arn`** *(string)*: Amazon Resource Name.
+**Connections coming soon**
 
-            Examples:
-            ```json
-            "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
-            ```
-
-            ```json
-            "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
-            ```
-
-          - **`oidc_issuer_url`** *(string)*: An HTTPS endpoint URL.
-
-            Examples:
-            ```json
-            "https://example.com/some/path"
-            ```
-
-            ```json
-            "https://massdriver.cloud"
-            ```
-
-        - Infrastructure Config*object*: Azure AKS Infrastructure Configuration. Cannot contain additional properties.
-          - **`ari`** *(string)*: Azure Resource ID.
-
-            Examples:
-            ```json
-            "/subscriptions/12345678-1234-1234-abcd-1234567890ab/resourceGroups/resource-group-name/providers/Microsoft.Network/virtualNetworks/network-name"
-            ```
-
-          - **`oidc_issuer_url`** *(string)*
-        - GCP Infrastructure GRN*object*: Minimal GCP Infrastructure Config. Cannot contain additional properties.
-          - **`grn`** *(string)*: GCP Resource Name (GRN).
-
-            Examples:
-            ```json
-            "projects/my-project/global/networks/my-global-network"
-            ```
-
-            ```json
-            "projects/my-project/regions/us-west2/subnetworks/my-subnetwork"
-            ```
-
-            ```json
-            "projects/my-project/topics/my-pubsub-topic"
-            ```
-
-            ```json
-            "projects/my-project/subscriptions/my-pubsub-subscription"
-            ```
-
-            ```json
-            "projects/my-project/locations/us-west2/instances/my-redis-instance"
-            ```
-
-            ```json
-            "projects/my-project/locations/us-west2/clusters/my-gke-cluster"
-            ```
-
-  - **`specs`** *(object)*
-    - **`aws`** *(object)*: .
-      - **`region`** *(string)*: AWS Region to provision in.
-
-        Examples:
-        ```json
-        "us-west-2"
-        ```
-
-    - **`azure`** *(object)*: .
-      - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
-    - **`gcp`** *(object)*: .
-      - **`project`** *(string)*
-      - **`region`** *(string)*: The GCP region to provision resources in.
-
-        Examples:
-        ```json
-        "us-east1"
-        ```
-
-        ```json
-        "us-east4"
-        ```
-
-        ```json
-        "us-west1"
-        ```
-
-        ```json
-        "us-west2"
-        ```
-
-        ```json
-        "us-west3"
-        ```
-
-        ```json
-        "us-west4"
-        ```
-
-        ```json
-        "us-central1"
-        ```
-
-    - **`kubernetes`** *(object)*: Kubernetes distribution and version specifications.
-      - **`cloud`** *(string)*: Must be one of: `['aws', 'gcp', 'azure']`.
-      - **`distribution`** *(string)*: Must be one of: `['eks', 'gke', 'aks']`.
-      - **`platform_version`** *(string)*
-      - **`version`** *(string)*
 <!-- CONNECTIONS:END -->
 
 </details>
@@ -209,7 +67,8 @@ Resources created by this bundle that can be connected to other bundles.
 <summary>View</summary>
 
 <!-- ARTIFACTS:START -->
-## Properties
+
+**Artifacts coming soon**
 
 <!-- ARTIFACTS:END -->
 
