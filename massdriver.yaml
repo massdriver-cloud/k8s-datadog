@@ -1,31 +1,30 @@
 schema: draft-07
-name: "k8s-datadog"
-description: "This chart installs the Datadog Agent into your Kubernetes cluster to collect and send observability information to Datadog"
-source_url: github.com/massdriver-cloud/k8s-datadog
-access: private
-type: "infrastructure"
-
+name: k8s-datadog
+version: 1.0.0
+description: This chart installs the Datadog Agent into your Kubernetes cluster to collect and send observability information to Datadog
+source_url: https://github.com/massdriver-cloud/k8s-datadog
+type: application
 params:
   required:
-    - namespace
-    - datadog
-    - clusterAgent
-    - networkMonitoring
-    - systemProbe
-    - securityAgent
+  - namespace
+  - datadog
+  - clusterAgent
+  - networkMonitoring
+  - systemProbe
+  - securityAgent
   properties:
     namespace:
       title: Namespace
       type: string
-      default: "datadog"
+      default: datadog
     datadog:
       required:
-        - site
-        - apiKey
-        - apm
-        - dogstatsd
-        - logs
-        - env
+      - site
+      - apiKey
+      - apm
+      - dogstatsd
+      - logs
+      - env
       properties:
         site:
           type: string
@@ -132,17 +131,14 @@ params:
           title: Runtime Settings
       type: object
       title: Security Agent Settings
-
 connections:
   required:
-    - kubernetes_cluster
+  - kubernetes_cluster
   properties:
     kubernetes_cluster:
-      $ref: massdriver/kubernetes-cluster
-
+      "$ref": massdriver/kubernetes-cluster
 artifacts:
   properties: {}
-
 ui:
   ui:order:
   - namespace
@@ -160,3 +156,9 @@ ui:
     - dogstatsd
     - logs
     - env
+steps:
+- path: src
+  provisioner: opentofu
+  config:
+    checkov:
+      enable: true
