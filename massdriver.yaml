@@ -135,7 +135,7 @@ connections:
   - kubernetes_cluster
   properties:
     kubernetes_cluster:
-      "$ref": massdriver/kubernetes-cluster
+      "$ref": kubernetes-cluster
 artifacts:
   properties: {}
 ui:
